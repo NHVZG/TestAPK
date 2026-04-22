@@ -3,6 +3,7 @@ package com.example.buildinfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.UUID;
@@ -13,9 +14,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        TextView tv = new TextView(this);
+        // 👇 这里就是 setContentView 的位置（必须在 onCreate 里）
+        setContentView(R.layout.activity_main);
+
+        // 👇 拿到布局里的 TextView
+        TextView tv = findViewById(R.id.tv_info);
+
+        // 👇 设置内容
         tv.setText(getAllInfo());
-        setContentView(tv);
     }
 
     private String getAllInfo() {
