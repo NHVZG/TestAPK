@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "com.example.buildinfo"
     compileSdk 25
 
     defaultConfig {
