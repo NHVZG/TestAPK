@@ -1,16 +1,22 @@
-<manifest package="com.example.buildinfo"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-   <activity
-    android:name=".MainActivity"
-    android:exported="true">
+    <application
+        android:label="BuildInfo"
+        android:allowBackup="true">
 
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.LAUNCHER"/>
-    </intent-filter>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
 
-</activity>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+
+        </activity>
+
+    </application>
+
 </manifest>
