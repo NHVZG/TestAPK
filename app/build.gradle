@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-    compileSdk 34
+    compileSdk 25
 
     defaultConfig {
         applicationId "com.example.buildinfo"
