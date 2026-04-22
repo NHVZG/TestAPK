@@ -3,16 +3,14 @@
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 
-    <application
-        android:label="BuildInfo"
-        android:allowBackup="true">
+   <activity
+    android:name=".MainActivity"
+    android:exported="true">
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
+    <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+    </intent-filter>
 
-    </application>
+</activity>
 </manifest>
