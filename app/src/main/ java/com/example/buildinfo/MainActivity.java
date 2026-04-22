@@ -13,15 +13,23 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+    
+        Log.e("TEST", "1 - onCreate start");
+    
         setContentView(R.layout.activity_main);
-
+    
+        Log.e("TEST", "2 - after setContentView");
+    
         TextView tv = findViewById(R.id.tv_info);
-
-        // 🔥 防止空指针闪退（Android 7 常见问题）
+    
+        Log.e("TEST", "3 - after findViewById");
+    
         if (tv != null) {
+            Log.e("TEST", "4 - tv not null");
             tv.setText(getAllInfo());
         }
+    
+        Log.e("TEST", "5 - onCreate end");
     }
 
     private String getAllInfo() {
