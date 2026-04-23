@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:text="Loading..."
         android:textSize="14sp"
-        android:padding="16dp"
-        android:textIsSelectable="true" />
+        android:padding="16dp" />
 
 </ScrollView>
