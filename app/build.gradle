@@ -4,16 +4,24 @@ plugins {
 
 android {
     namespace "com.example.buildinfo"
-
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.buildinfo"
         minSdk 21
-        targetSdk 25
+        targetSdk 33
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false   // 🔥 防止类被删除
+        }
+        release {
+            minifyEnabled false
+        }
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
 }
