@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         tv = findViewById(R.id.tv_info);
 
-        // 👉 请求权限（Android 8+ 获取序列号需要）
+        // Android 6+ 申请权限（兼容 Android 8/9）
         if (Build.VERSION.SDK_INT >= 23) {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // ===================== 输出所有信息 =====================
     private String getAllInfo() {
 
         StringBuilder sb = new StringBuilder();
@@ -64,10 +65,9 @@ public class MainActivity extends AppCompatActivity {
         sb.append("\n===== 系统版本 =====\n");
         sb.append("SDK_INT: ").append(Build.VERSION.SDK_INT).append("\n");
         sb.append("RELEASE: ").append(safe(Build.VERSION.RELEASE)).append("\n");
-        sb.append("CODENAME: ").append(safe(Build.VERSION.CODENAME)).append("\n");
 
         sb.append("\n===== Serial =====\n");
-        sb.append("Serial: ").append(getSerialSafe()).append("\n");
+        sb.append(getSerialDetail()).append("\n");
 
         sb.append("\n===== 生成ID =====\n");
         sb.append(generateId()).append("\n");
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         return sb.toString();
     }
 
-    // ===== 核心：生成ID（你给的逻辑）=====
+    // ===================== 你原始算法（修复版） =====================
     private String generateId() {
 
         String r0 = "77"
@@ -93,16 +93,40 @@ public class MainActivity extends AppCompatActivity {
                 + (len(Build.TYPE) % 10)
                 + (len(Build.USER) % 10);
 
-        try {
-            String serial = getSerialSafe();
-            return new UUID(r0.hashCode(), serial.hashCode()).toString();
-        } catch (Exception e) {
+        String serial = getSerialRaw();
+
+        // 🔥 关键：处理 UNKNOWN / null
+        if (serial == null || serial.equalsIgnoreCase("unknown")) {
             return new UUID(r0.hashCode(), -2050236998L).toString() + "f";
+        }
+
+        return new UUID(r0.hashCode(), serial.hashCode()).toString();
+    }
+
+    // ===================== Serial 获取（核心） =====================
+
+    // 原始 serial（用于计算）
+    private String getSerialRaw() {
+        try {
+            if (Build.VERSION.SDK_INT >= 26) {
+
+                if (ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.READ_PHONE_STATE)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return null;
+                }
+
+                return Build.getSerial();
+            } else {
+                return Build.SERIAL;
+            }
+        } catch (Exception e) {
+            return null;
         }
     }
 
-    // ===== 安全获取 Serial =====
-    private String getSerialSafe() {
+    // 展示用（带状态说明）
+    private String getSerialDetail() {
 
         try {
             if (Build.VERSION.SDK_INT >= 26) {
@@ -113,16 +137,25 @@ public class MainActivity extends AppCompatActivity {
                     return "NO_PERMISSION";
                 }
 
-                return Build.getSerial();
+                String s = Build.getSerial();
+
+                if (s == null || s.equalsIgnoreCase("unknown")) {
+                    return "UNKNOWN (系统限制)";
+                }
+
+                return s;
+
             } else {
                 return Build.SERIAL;
             }
+
         } catch (Exception e) {
-            return "ERROR";
+            return "ERROR: " + e.getClass().getSimpleName();
         }
     }
 
-    // ===== 工具 =====
+    // ===================== 工具 =====================
+
     private String safe(String s) {
         return s == null ? "null" : s;
     }
